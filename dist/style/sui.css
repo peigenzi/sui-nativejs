@@ -1,0 +1,11 @@
+h1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 50px;
+  width: 100%;
+  border-radius: 5px; }
+  h1 ::-webkit-input-placeholder {
+    color: gray; }
+  h1 ::placeholder {
+    color: gray; }

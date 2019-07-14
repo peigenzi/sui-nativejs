@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="box1">
+            <span>1</span>
+        </div>
+        <div class="box2">
+            <span>2</span>
+        </div>
+        <script>
+            $ = (function(document, s_addEventListener, s_querySelectorAll) {
+                function $(s, context, bala) {
+                    bala = Object.create($.fn);
+
+                    // s &&
+                    //     bala.push.apply(
+                    //         bala, // if s is truly then push the following
+                    //         s[s_addEventListener] // if arg is node or window,
+                    //             ? [s] // then pass [s]
+                    //             : '' + s === s // else if arg is a string
+                    //             ? /</.test(s) // if the string contains "<" (if HTML code is passed)
+                    //                 ? // then parse it and return node.children
+                    //                   // use 'addEventListener' (HTMLUnknownElement) if context is not presented
+                    //                   (((context = document.createElement(context)).innerHTML = s), context.children)
+                    //                 : context // else if context is truly
+                    //                 ? (context = $(context)[0]) // if context element is found
+                    //                     ? context[s_querySelectorAll](s) // then select element from context
+                    //                     : bala // else pass [] (context isn't found)
+                    //                 : document[s_querySelectorAll](s) // else select elements globally
+                    //             : s
+                    //     ); // else guessing that s variable is array-like Object
+
+                    var arg;
+                    if (s) {
+                        if (s[s_addEventListener]) {
+                            // if arg is node or window
+                            // $(document.body)
+                            // 如果传入的是单个的节点对象，或者window对象
+                            arg = [s];
+                        } else {
+                            // else if arg is a string
+                            if ('' + s === s) {
+                                // if the string contains "<" (if HTML code is passed)
+                                // then parse it and return node.children
+                                // use 'addEventListener' (HTMLUnknownElement) if content is not presented(如果内容不呈现)
+                                if (/</.test(s)) {
+                                    // html解析模块
+                                    // context.children 是s的元素内容
+                                    // var div = $('<div><span class="yeah"></span></div>');
+                                    // div 就是创建的节点
+                                    // arg = context.children
+                                    arg = (((context = document.createElement(context || s_addEventListener)).innerHTML = s),
+                                    context.children);
+                                } else {
+                                    if (context) {
+                                        arg = (context = $(context)[0]) ? context[s_querySelectorAll](s) : bala;
+                                    } else {
+                                        // 元素获取模块
+                                        // $('.button') 类名的时候走这一步
+                                        // $(".box button")
+                                        // 如果querySelectorAll没有获取到数据，那么会返回一个空数组
+                                        arg = document[s_querySelectorAll](s);
+                                    }
+                                }
+                            } else {
+                                // $(document.querySelectorAll('.button'));如果传入的是直接的节点对象的话
+                                // $(document.querySelector('.box').children);
+                                // $([document.querySelector('.btn1'), document.querySelector('.btn2')]);
+                                // $(jQuery('.button'))
+                                // 直接传入数组
+                                arg = s;
+                            }
+                        }
+
+                        bala.push.apply(bala, arg);
+                    }
+
+                    return bala;
+                }
+
+                $.fn = [];
+
+                $.one = function(s, context) {
+                    return $(s, context)[0] || null;
+                };
+
+                return $;
+            })(document, 'addEventListener', 'querySelectorAll');
+        </script>
+        <script>
+            function co() {
+                console.log(11111);
+            }
+            console.log($(co));
+        </script>
+    </body>
+</html>

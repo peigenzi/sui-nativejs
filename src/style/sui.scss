@@ -1,0 +1,9 @@
+h1 {
+    display: flex;
+    padding-left: 50px;
+    width: 100%;
+    border-radius: 5px;
+    ::placeholder {
+        color: gray;
+    }
+}
